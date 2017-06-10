@@ -19,12 +19,23 @@ public plugin_init()
 
 public event_WeaponInfo(id)
 {
-  // No weapons for you, Faded :)
-  if(get_user_team(id) == 2)
-  {
-      console_cmd(id, "drop")
-      client_print(id, print_chat, "FadedParadigm dropped all weapons")
-  }
+    new team_id = get_user_team(id)
+    switch (team_id)
+    {
+      case 1:
+      {
+      }
+      case 2:
+      {
+        drop_weapons(id)
+      }
+    }
+}
+
+stock drop_weapons(id)
+{
+  console_cmd(id, "drop")
+  client_print(id, print_chat, "FadedParadigm dropped all weapons")
 }
 
 public start_match(id)
@@ -35,24 +46,31 @@ public start_match(id)
     attached = true
   }
 
-  increase_health(1000)
+  setup_fadedparadigm()
 
   client_print(id, print_chat, "Johnny B. Great is now active!")
 }
 
-public increase_health(amount)
+stock setup_fadedparadigm()
 {
   new const fadedParadigm_team = 2
   new players[32], num
   get_players(players, num)
   new i
+  new id
   for (i = 0; i < num; i++)
   {
-    if (get_user_team(players[i]) == fadedParadigm_team)
+    id = players[i]
+    if (get_user_team(id) == fadedParadigm_team)
     {
-      set_user_health(players[i], amount)
-      client_print(0, print_chat, "Set FadedParadigm's Health to 1000!")
-      break
+      increase_health(id, 1000)
+      drop_weapons(id);
     }
   }
+}
+
+stock increase_health(id, amount)
+{
+  set_user_health(id, amount)
+  client_print(0, print_chat, "Set Health to %i!", amount)
 }
