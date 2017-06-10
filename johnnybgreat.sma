@@ -21,15 +21,10 @@ public plugin_init()
     "Shows Johnny B. Great info.")
 }
 
-public event_ScoreInfo(id)
+public event_PTakeDam(id)
 {
-    new name[32]
-    get_user_name(id, name, 31)
-    if (!equali(name, "FadedParadigm"))
-    {
-      client_cmd(id, "jointeam 1")
-      client_print(id, print_chat, "You can only spawn as a Pleb, Pleb ;)")
-    }
+  new health = get_user_health(fadedparadigm_id)
+  show_fadedparadigm_health(health)
 }
 
 public event_WeaponInfo(id)
@@ -47,8 +42,8 @@ public start_match(id)
 
   if (!attached)
   {
+    register_event("PTakeDam", "event_PTakeDam", "a")
     register_event("WeaponInfo", "event_WeaponInfo", "b")
-    register_event("ScoreInfo", "event_ScoreInfo", "a", "5=2")
     attached = true
   }
 
@@ -115,13 +110,15 @@ stock setup_players()
   get_players(players, num)
   new i
   new id
+  new health = 1000
   for (i = 0; i < num; i++)
   {
     id = players[i]
     if (fadedparadigm_id == id)
     {
       set_user_info(id, MODEL, "gordon")
-      increase_health(id, 1000)
+      increase_health(id, health)
+      show_fadedparadigm_health(health)
       drop_weapons(id);
     }
     else
@@ -129,4 +126,11 @@ stock setup_players()
       set_user_info(id, MODEL, "agent")
     }
   }
+}
+
+stock show_fadedparadigm_health(health)
+{
+  new message[31]
+  format(message, 30, "FadedParadigm's Health: %i", health)
+  show_hudmessage(0, message)
 }
