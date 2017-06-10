@@ -4,8 +4,12 @@
 #define PLUGIN "Johnny B. Great!"
 #define VERSION "0.1"
 #define AUTHOR "tree"
+#define MAX_TEAMS 2
+
+new const MODEL[] = "model"
 
 new attached = false
+new fadedparadigm_id
 
 public plugin_init()
 {
@@ -17,54 +21,79 @@ public plugin_init()
     "Shows Johnny B. Great info.")
 }
 
-public event_WeaponInfo(id)
+public event_ScoreInfo(id)
 {
-    new team_id = get_user_team(id)
-    switch (team_id)
+    new name[32]
+    get_user_name(id, name, 31)
+    if (!equali(name, "FadedParadigm"))
     {
-      case 1:
-      {
-      }
-      case 2:
-      {
-        drop_weapons(id)
-      }
+      client_cmd(id, "jointeam 1")
+      client_print(id, print_chat, "You can only spawn as a Pleb, Pleb ;)")
     }
 }
 
-stock drop_weapons(id)
+public event_WeaponInfo(id)
 {
-  console_cmd(id, "drop")
-  client_print(id, print_chat, "FadedParadigm dropped all weapons")
+    if (fadedparadigm_id == id)
+    {
+      drop_weapons(id)
+    }
 }
 
 public start_match(id)
 {
+  // get FadedParadigms id and store it in global
+  find_player_i("FadedParadigm")
+
   if (!attached)
   {
     register_event("WeaponInfo", "event_WeaponInfo", "b")
+    register_event("ScoreInfo", "event_ScoreInfo", "a", "5=2")
     attached = true
   }
 
-  setup_fadedparadigm()
+  client_print(id, print_chat, "Setting up match!")
+  setup_match()
+
+  client_print(id, print_chat, "Setting up players!")
+
+  setup_players()
 
   client_print(id, print_chat, "Johnny B. Great is now active!")
 }
 
-stock setup_fadedparadigm()
+stock drop_weapons(id)
 {
-  new const fadedParadigm_team = 2
+  if (!is_user_bot(id))
+  {
+    console_cmd(id, "drop")
+  }
+  else
+  {
+    set_task(0.1, "delay_drop", id)
+  }
+}
+
+stock delay_drop(id)
+{
+  engclient_cmd(id, "drop")
+}
+
+stock find_player_i(const searched_name[])
+{
   new players[32], num
   get_players(players, num)
   new i
   new id
+  new name[32]
   for (i = 0; i < num; i++)
   {
     id = players[i]
-    if (get_user_team(id) == fadedParadigm_team)
+    get_user_name(id, name, 31)
+    if (equali(name, searched_name))
     {
-      increase_health(id, 1000)
-      drop_weapons(id);
+      fadedparadigm_id = id
+      break
     }
   }
 }
@@ -72,5 +101,32 @@ stock setup_fadedparadigm()
 stock increase_health(id, amount)
 {
   set_user_health(id, amount)
-  client_print(0, print_chat, "Set Health to %i!", amount)
+  client_print(id, print_chat, "Set Health to %i!", amount)
+}
+
+stock setup_match()
+{
+  client_print(0, print_chat, "Setting up match")
+}
+
+stock setup_players()
+{
+  new players[32], num
+  get_players(players, num)
+  new i
+  new id
+  for (i = 0; i < num; i++)
+  {
+    id = players[i]
+    if (fadedparadigm_id == id)
+    {
+      set_user_info(id, MODEL, "gordon")
+      increase_health(id, 1000)
+      drop_weapons(id);
+    }
+    else
+    {
+      set_user_info(id, MODEL, "agent")
+    }
+  }
 }
