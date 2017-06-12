@@ -4,7 +4,6 @@
 #define PLUGIN "Johnny B. Great!"
 #define VERSION "0.1"
 #define AUTHOR "tree"
-#define MAX_TEAMS 2
 
 new const MODEL[] = "model"
 
