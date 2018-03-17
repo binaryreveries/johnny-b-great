@@ -1,29 +1,14 @@
-                    Johnny B. Great! for The Specialists 2.1
-                    ========================================
-                                  by tree
+Johnny B. Great! for The Specialists 2.1
+========================================
 
- This is a fun little mod created in celebration of FadedParadigm's upcoming
- wedding. When the "Jonny B. Great!" gamemode is activated, the player named
- "FadedParadigm" is given 1000 health and has all their weapons stripped. For
- the entire duration of the activation, "FadedParadigm" will not be able to
- pick up weapons. Once the player's health reaches 100, he will be given a
- kung-fu powerup.
+This is a fun little mod created in celebration of FadedParadigm's upcoming
+wedding.
 
- ## Instructions ##
- Add these lines to `server.cfg` if they do not exist already:
+When the "Jonny B. Great!" gamemode is activated (`say /jbg`), the player named
+"FadedParadigm" is given 1000 health, their model is set to Gordon, and all
+their weapons are stripped. All other players are now considered "Agents" and
+have their models set accordingly. Once either FadedParadigm is defeated, or
+100 agents the game is over. A new match will then begin automatically.
 
-      ```
-         mp_teamlist "Plebs;FadedParadigm"
-         mp_teammodels "laurence;merc;seal|gordon;"
-         bottalk 0
-      ```
-
- ####  NOTE: ####
- You can use any player models you'd like for `mp_teammodels`.
- However, you should not change the names or the order of the teams.
-
- Add this line to `game.cfg` if it does not exist already:
-
-      ```
-         "mp_teamplay" "1"
-      ```
+When FadedParadigm is damaged, a message is broadcasted to the HUD of all
+players indicating remaining health.
