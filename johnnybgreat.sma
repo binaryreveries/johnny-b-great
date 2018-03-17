@@ -92,12 +92,6 @@ stock find_player_i(const searched_name[])
   }
 }
 
-stock increase_health(id, amount)
-{
-  set_user_health(id, amount)
-  client_print(id, print_chat, "Set Health to %i!", amount)
-}
-
 stock setup_match()
 {
   client_print(0, print_chat, "Setting up match")
@@ -116,7 +110,10 @@ stock setup_players()
     if (fadedparadigm_id == id)
     {
       set_user_info(id, MODEL, "gordon")
-      increase_health(id, health)
+
+      set_user_health(id, health)
+      client_print(id, print_chat, "Set FadedParadigm's Health to %i!", health)
+
       show_fadedparadigm_health(health)
       drop_weapons(id);
     }
