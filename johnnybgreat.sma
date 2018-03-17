@@ -8,7 +8,9 @@
 new const MODEL[] = "model"
 
 new attached = false
+new match_running = false
 new fadedparadigm_id
+new remaining_agents = 100
 
 public plugin_init()
 {
@@ -18,6 +20,21 @@ public plugin_init()
   // register say commands which are used via chat
   register_clcmd("say /jbg", "start_match", -1,
     "Shows Johnny B. Great info.")
+}
+
+public event_DeathMsg(id)
+{
+	// if all agents are killed, or faded is defeated, restart
+	if (fadedparadigm_id == id || remaining_agents == 0)
+	{
+		show_hudmessage(0, "GAME OVER")
+		set_task(7.0, "start_match")
+	}
+	else
+	{
+		remaining_agents--
+		client_print(0, print_chat, "Only %i agents remain!")
+	}
 }
 
 public event_PTakeDam(id)
@@ -30,17 +47,21 @@ public event_WeaponInfo(id)
 {
     if (fadedparadigm_id == id)
     {
-      drop_weapons(id)
+      // drop_weapons(id)
     }
 }
 
 public start_match(id)
 {
+  match_running = false
+  remaining_agents = 100
+
   // get FadedParadigms id and store it in global
   find_player_i("FadedParadigm")
 
   if (!attached)
   {
+    register_event("DeathMsg", "event_DeathMsg", "a")
     register_event("PTakeDam", "event_PTakeDam", "a")
     register_event("WeaponInfo", "event_WeaponInfo", "b")
     attached = true
@@ -54,6 +75,7 @@ public start_match(id)
   setup_players()
 
   client_print(id, print_chat, "Johnny B. Great is now active!")
+  match_running = true
 }
 
 stock drop_weapons(id)
