@@ -24,28 +24,32 @@ public plugin_init()
 
 public event_DeathMsg(id)
 {
-	// if all agents are killed, or faded is defeated, restart
-	if (fadedparadigm_id == id || remaining_agents == 0)
-	{
-		show_hudmessage(0, "GAME OVER")
-		set_task(7.0, "start_match")
-	}
-	else
-	{
-		remaining_agents--
-		client_print(0, print_chat, "Only %i agents remain!")
-	}
+  if (match_running) {
+    // if all agents are killed, or faded is defeated, restart
+    if (fadedparadigm_id == id || remaining_agents == 0)
+    {
+      show_hudmessage(0, "GAME OVER")
+      set_task(7.0, "start_match")
+    }
+    else
+    {
+      remaining_agents--
+      client_print(0, print_chat, "Only %i agents remain!")
+    }
+  }
 }
 
 public event_PTakeDam(id)
 {
-  new health = get_user_health(fadedparadigm_id)
-  show_fadedparadigm_health(health)
+  if (match_running) {
+    new health = get_user_health(fadedparadigm_id)
+    show_fadedparadigm_health(health)
+  }
 }
 
 public event_WeaponInfo(id)
 {
-    if (fadedparadigm_id == id)
+    if (match_running && fadedparadigm_id == id)
     {
       // drop_weapons(id)
     }
