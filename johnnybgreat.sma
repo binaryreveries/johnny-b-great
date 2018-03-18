@@ -45,7 +45,9 @@ public event_DeathMsg(id)
     }
     else
     {
-      client_print(0, print_chat, "Only %i agents remain!")
+      new message[25]
+      format(message, 24, "Only %i agents remain!", remaining_agents)
+      client_print(0, print_chat, message)
     }
   }
 }
