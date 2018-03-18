@@ -1,13 +1,19 @@
 os: linux
 language: c
-
 env:
-  - AMX_MOD_X_VERSION=1.8.2
-
+- AMX_MOD_X_VERSION=1.8.2
 addons:
   apt:
     packages:
     - lib32stdc++6
-
 script:
-  - make
+- make
+deploy:
+  provider: releases
+  file_glob: true
+  file: build/amxmodx-$AMX_MOD_X_VERSION/compiled/*
+  skip_cleanup: true
+  on:
+    tags: true
+  api_key:
+    secure: aqfOfvBJQjXWjGGtpy4wvi18Lg2SGtbnbjP4Q0Y46JjJLWq46Glx0LYkBmqeodsCA/OKfDecEoQv6KPv0/shyDe3/qODfQcM+6sWik66cAR8QnaROq466y3ddO9oZZpfKVlSA1U6AJOrOr44uvmG0ctAzgVk1Aqxi5z+7hRpkDR8bdOul+PysphwbU4KkJxrKiXDvngVYgXz9EFgVWEPyzGvWHaiFQQlsW5s+Pse2xDBJXblXqVhisxKOm1eX//ie/yQ6um5HE/OBduA+u/efTYhCPvIBXzp/DMFN5B88BAHLpUKRS5OQ9awy066PgdocpGCWt1yGbVH1iF+SMhndelGnuYUem4IBA+Y/lt1wMeKBHV2jCCYYDuidZxtkyLGP56Uclbd3Lww9mEE/mPFX9ANfL9dikX4vBVRUSomt/cxrY3Fqq6eRhskSAOTURawfDqFsE3y7MIzVWcNFawn+pelRmvYDrC60rS4jT3CeHvWHP8Aailp2khWGFgSliBx/yLhmduDFn3nvm9Jv89s7U5qKWK8QxY3AwoEKQLQqhAVbSwiUtHKb/5cnLmBeseHjyO60L5TvROM5hq9OiFHP/58D4oCxS91Dx5lkA1y+4oylloNlqklFK/XHqEfj1TphByX7W4NM67jeLRV1c5QkCv9J2LYU57K7WIzYhzkUWk=
