@@ -13,6 +13,8 @@ have their models set accordingly. Once either FadedParadigm is defeated, or
 When FadedParadigm is damaged, a message is broadcasted to the HUD of all
 players indicating remaining health.
 
+[![Build Status](https://travis-ci.org/binaryreveries/johnny-b-great.svg?branch=master)](https://travis-ci.org/binaryreveries/johnny-b-great)
+
 
 Requirements
 ------------

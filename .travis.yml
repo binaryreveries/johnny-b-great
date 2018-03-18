@@ -1,0 +1,13 @@
+os: linux
+language: c
+
+env:
+  - AMX_MOD_X_VERSION=1.8.2
+
+addons:
+  apt:
+    packages:
+    - lib32stdc++6
+
+script:
+  - make
