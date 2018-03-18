@@ -24,16 +24,27 @@ public plugin_init()
 
 public event_DeathMsg(id)
 {
-  if (match_running) {
-    // if all agents are killed, or faded is defeated, restart
-    if (fadedparadigm_id == id || remaining_agents == 0)
+  if (match_running)
+  {
+    if (fadedparadigm_id == id)
     {
+      match_running = false
       show_hudmessage(0, "GAME OVER")
-      set_task(7.0, "start_match")
+      show_hudmessage(0, "Agents have Prevailed!")
     }
     else
     {
       remaining_agents--
+    }
+
+    if (remaining_agents == 0)
+    {
+      match_running = false
+      show_hudmessage(0, "GAME OVER")
+      show_hudmessage(0, "FadedParadigm is Victorious!")
+    }
+    else
+    {
       client_print(0, print_chat, "Only %i agents remain!")
     }
   }
@@ -57,7 +68,12 @@ public event_WeaponInfo(id)
 
 public start_match(id)
 {
-  match_running = false
+  if (match_running)
+  {
+    match_running = false
+    show_hudmessage(0, "GAME OVER")
+    show_hudmessage(0, "NO CONTEST")
+  }
 
   client_print(id, print_chat, "Setting up match!")
   remaining_agents = 100

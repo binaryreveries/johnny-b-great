@@ -6,7 +6,7 @@ TODO
 - Instant Respawn
 - Close Proximity Respawn
 - Win Conditions
-  - Kill Counter
+  - Kill Counter ✅
   - Timer
 - Last Stand/Boost Stats When HP < 100
 - Randomize Agent Loadouts
