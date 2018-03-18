@@ -58,6 +58,8 @@ public event_WeaponInfo(id)
 public start_match(id)
 {
   match_running = false
+
+  client_print(id, print_chat, "Setting up match!")
   remaining_agents = 100
 
   // get FadedParadigms id and store it in global
@@ -65,18 +67,41 @@ public start_match(id)
 
   if (!attached)
   {
+    client_print(id, print_chat, "Setting up events!")
     register_event("DeathMsg", "event_DeathMsg", "a")
     register_event("PTakeDam", "event_PTakeDam", "a")
     register_event("WeaponInfo", "event_WeaponInfo", "b")
     attached = true
   }
-
-  client_print(id, print_chat, "Setting up match!")
-  setup_match()
+  else
+  {
+    client_print(id, print_chat, "Events are already setup!")
+  }
 
   client_print(id, print_chat, "Setting up players!")
+  new players[32], num
+  get_players(players, num)
+  new i
+  new id
+  new health = 1000
+  for (i = 0; i < num; i++)
+  {
+    id = players[i]
+    if (fadedparadigm_id == id)
+    {
+      set_user_info(id, MODEL, "gordon")
 
-  setup_players()
+      set_user_health(id, health)
+      client_print(id, print_chat, "Set FadedParadigm's Health to %i!", health)
+
+      show_fadedparadigm_health(health)
+      drop_weapons(id);
+    }
+    else
+    {
+      set_user_info(id, MODEL, "agent")
+    }
+  }
 
   client_print(id, print_chat, "Johnny B. Great is now active!")
   match_running = true
@@ -114,38 +139,6 @@ stock find_player_i(const searched_name[])
     {
       fadedparadigm_id = id
       break
-    }
-  }
-}
-
-stock setup_match()
-{
-  client_print(0, print_chat, "Setting up match")
-}
-
-stock setup_players()
-{
-  new players[32], num
-  get_players(players, num)
-  new i
-  new id
-  new health = 1000
-  for (i = 0; i < num; i++)
-  {
-    id = players[i]
-    if (fadedparadigm_id == id)
-    {
-      set_user_info(id, MODEL, "gordon")
-
-      set_user_health(id, health)
-      client_print(id, print_chat, "Set FadedParadigm's Health to %i!", health)
-
-      show_fadedparadigm_health(health)
-      drop_weapons(id);
-    }
-    else
-    {
-      set_user_info(id, MODEL, "agent")
     }
   }
 }
