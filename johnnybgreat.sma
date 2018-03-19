@@ -9,7 +9,6 @@ new const MODEL[] = "model"
 
 new attached = false
 new match_running = false
-new fadedparadigm_id
 new remaining_agents = 100
 
 public plugin_init()
@@ -24,15 +23,19 @@ public plugin_init()
 
 public event_DeathMsg(id)
 {
+  // this id is a lie... we must get ids from client
+  new attacker_id = read_data(1)
+  new victim_id = read_data(2)
+  new fp_id = find_player_i("FadedParadigm")
   if (match_running)
   {
-    if (fadedparadigm_id == id)
+    if (victim_id == fp_id)
     {
       match_running = false
       show_hudmessage(0, "GAME OVER")
       show_hudmessage(0, "Agents have Prevailed!")
     }
-    else
+    else if (attacker_id == fp_id)
     {
       remaining_agents--
     }
@@ -54,17 +57,22 @@ public event_DeathMsg(id)
 
 public event_PTakeDam(id)
 {
-  if (match_running) {
-    new health = get_user_health(fadedparadigm_id)
-    show_fadedparadigm_health(health)
+  if (match_running)
+  {
+    if (id == find_player_i("FadedParadigm"))
+    {
+      show_fadedparadigm_health(get_user_health(id))
+    }
   }
 }
 
 public event_WeaponInfo(id)
 {
-    if (match_running && fadedparadigm_id == id)
+    if (match_running)
     {
-      // drop_weapons(id)
+      if (id == find_player_i("FadedParadigm")) {
+        // drop_weapons(id)
+      }
     }
 }
 
@@ -79,9 +87,6 @@ public start_match(id)
 
   client_print(id, print_chat, "Setting up match!")
   remaining_agents = 100
-
-  // get FadedParadigms id and store it in global
-  find_player_i("FadedParadigm")
 
   if (!attached)
   {
@@ -101,6 +106,7 @@ public start_match(id)
   get_players(players, num)
   new i
   new id
+  new fadedparadigm_id = find_player_i("FadedParadigm")
   new health = 1000
   for (i = 0; i < num; i++)
   {
@@ -142,12 +148,14 @@ stock delay_drop(id)
   engclient_cmd(id, "drop")
 }
 
+/* Looks up player id by name. Returns -1 if not found. */
 stock find_player_i(const searched_name[])
 {
   new players[32], num
   get_players(players, num)
   new i
-  new id
+  new id = -1
+  new player_id = id
   new name[32]
   for (i = 0; i < num; i++)
   {
@@ -155,10 +163,11 @@ stock find_player_i(const searched_name[])
     get_user_name(id, name, 31)
     if (equali(name, searched_name))
     {
-      fadedparadigm_id = id
+      player_id = id
       break
     }
   }
+  return player_id
 }
 
 stock show_fadedparadigm_health(health)
