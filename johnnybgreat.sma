@@ -11,6 +11,12 @@ new attached = false
 new match_running = false
 new remaining_agents = 100
 
+new HUD_msg_sync
+new HP_msg_sync
+new AGENTS_msg_sync
+
+const TARGET_ALL = 0  // display HUD message to all players
+
 public plugin_init()
 {
   // register plugin with AMX Mod X
@@ -19,6 +25,10 @@ public plugin_init()
   // register say commands which are used via chat
   register_clcmd("say /jbg", "start_match", -1,
     "Shows Johnny B. Great info.")
+
+  HUD_msg_sync = CreateHudSyncObj()
+  HP_msg_sync = CreateHudSyncObj()
+  AGENTS_msg_sync = CreateHudSyncObj()
 }
 
 public event_DeathMsg(id)
@@ -32,8 +42,10 @@ public event_DeathMsg(id)
     if (victim_id == fp_id)
     {
       match_running = false
-      show_hudmessage(0, "GAME OVER")
-      show_hudmessage(0, "Agents have Prevailed!")
+      set_hudmessage(255, 0, 0, 0.5, 0.15, 0, 6.0, 12.0, 0.5, 0.25, -1)
+      ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "GAME OVER")
+      set_hudmessage(255, 0, 0, 0.5, 0.5, 0, 6.0, 12.0, 0.5, 0.25, -1)
+      ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "Agents have Prevailed!")
     }
     else if (attacker_id == fp_id)
     {
@@ -43,14 +55,17 @@ public event_DeathMsg(id)
     if (remaining_agents == 0)
     {
       match_running = false
-      show_hudmessage(0, "GAME OVER")
-      show_hudmessage(0, "FadedParadigm is Victorious!")
+      set_hudmessage(255, 0, 0, 0.5, 0.15, 0, 6.0, 12.0, 0.5, 0.25, -1)
+      ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "GAME OVER")
+      set_hudmessage(255, 0, 0, 0.5, 0.5, 0, 6.0, 12.0, 0.5, 0.25, -1)
+      ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "FadedParadigm is Victorious!")
     }
     else
     {
       new message[25]
       format(message, 24, "Only %i agents remain!", remaining_agents)
-      client_print(0, print_chat, message)
+      set_hudmessage(255, 0, 0, 1.0, 0.25, 0, 6.0, 12.0, 0.5, 0.25, -1)
+      ShowSyncHudMsg(TARGET_ALL, AGENTS_msg_sync, message)
     }
   }
 }
@@ -81,8 +96,10 @@ public start_match(id)
   if (match_running)
   {
     match_running = false
-    show_hudmessage(0, "GAME OVER")
-    show_hudmessage(0, "NO CONTEST")
+    set_hudmessage(255, 0, 0, 0.5, 0.15, 0, 6.0, 12.0, 0.5, 0.25, -1)
+    ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "GAME OVER")
+    set_hudmessage(255, 0, 0, 0.5, 0.5, 0, 6.0, 12.0, 0.5, 0.25, -1)
+    ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "NO CONTEST")
   }
 
   client_print(id, print_chat, "Setting up match!")
@@ -174,5 +191,6 @@ stock show_fadedparadigm_health(health)
 {
   new message[31]
   format(message, 30, "FadedParadigm's Health: %i", health)
-  show_hudmessage(0, message)
+  set_hudmessage(255, 0, 0, 1.0, 0.5, 0, 6.0, 12.0, 0.5, 0.25, -1)
+  ShowSyncHudMsg(TARGET_ALL, HP_msg_sync, message)
 }
