@@ -160,7 +160,7 @@ stock drop_weapons(id)
   }
 }
 
-stock delay_drop(id)
+public delay_drop(id)
 {
   engclient_cmd(id, "drop")
 }
