@@ -1,4 +1,5 @@
 #include <amxmodx>
+#include <hamsandwich>
 #include <fun>
 
 #define PLUGIN "Johnny B. Great!"
@@ -26,9 +27,23 @@ public plugin_init()
   register_clcmd("say /jbg", "start_match", -1,
     "Shows Johnny B. Great info.")
 
+  RegisterHam(Ham_TakeDamage, "player", "hook_TakeDamage", 0, true)  
+
+
   HUD_msg_sync = CreateHudSyncObj()
   HP_msg_sync = CreateHudSyncObj()
   AGENTS_msg_sync = CreateHudSyncObj()
+}
+
+public hook_TakeDamage(victim_id, inflictor_id, attacker_id, damage, damagebits)
+{
+  if (match_running)
+  {
+    if (attacker_id != find_player_i("FadedParadigm"))
+    {
+
+    }
+  }
 }
 
 public event_DeathMsg(id)
@@ -74,9 +89,17 @@ public event_PTakeDam(id)
 {
   if (match_running)
   {
+    new health = get_user_health(id)
     if (id == find_player_i("FadedParadigm"))
     {
-      show_fadedparadigm_health(get_user_health(id))
+      show_fadedparadigm_health(health)
+    }
+    else
+    {
+      if (health <= 0)
+      {
+        spawn(id)  // instant respawn!
+      }
     }
   }
 }
@@ -109,7 +132,6 @@ public start_match(id)
   {
     client_print(id, print_chat, "Setting up events!")
     register_event("DeathMsg", "event_DeathMsg", "a")
-    register_event("PTakeDam", "event_PTakeDam", "a")
     register_event("WeaponInfo", "event_WeaponInfo", "b")
     attached = true
   }

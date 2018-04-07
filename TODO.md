@@ -3,7 +3,7 @@ TODO
 
 - Security
   - Lock down match triggering to AMX Admins
-- Instant Respawn
+- Instant Respawn ✅
 - Close Proximity Respawn
 - Win Conditions
   - Kill Counter ✅
