@@ -8,7 +8,7 @@ TODO
 - Win Conditions
   - Kill Counter ✅
   - Timer
-- Last Stand/Boost Stats When HP < 100
+- Last Stand/Boost Stats When HP < 100 ✅
 - Randomize Agent Loadouts
 - Accelerate/Launch Agents When Killed With Kung-Fu
 - Gun Game Style Loadout for One
