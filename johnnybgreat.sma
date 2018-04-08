@@ -1,4 +1,5 @@
 #include <amxmodx>
+#include <hamsandwich>
 #include <fun>
 
 #define PLUGIN "Johnny B. Great!"
@@ -26,9 +27,25 @@ public plugin_init()
   register_clcmd("say /jbg", "start_match", -1,
     "Shows Johnny B. Great info.")
 
+  RegisterHam(Ham_TakeDamage, "player", "hook_TakeDamage", 0, true)
+
   HUD_msg_sync = CreateHudSyncObj()
   HP_msg_sync = CreateHudSyncObj()
   AGENTS_msg_sync = CreateHudSyncObj()
+}
+
+public hook_TakeDamage(victim_id, inflictor_id, attacker_id, damage, damagebits)
+{
+  if (match_running)
+  {
+    if (attacker_id == find_player_i("FadedParadigm") &&
+        get_user_health(attacker_id) <= 100)
+    {
+      SetHamParamFloat(4, damage * 2.0)
+      speed = get_user_maxspeed(attack_id)
+      set_user_maxspeed(attack_id, speed * 2.0)
+    }
+  }
 }
 
 public event_DeathMsg(id)
