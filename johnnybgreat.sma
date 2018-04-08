@@ -45,6 +45,8 @@ public hook_TakeDamage(victim_id, inflictor_id, attacker_id, damage, damagebits)
       SetHamParamFloat(4, damage * 2.0)
       new Float:speed = Float:get_user_maxspeed(fadedparadigm_id)
       set_user_maxspeed(fadedparadigm_id, speed * 2.0)
+      set_hudmessage(255, 255, 255, 0.5, 0.15, 0, 6.0, 12.0, 0.5, 0.25, -1)
+      ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "LAST STAND")
     }
     else if (victim_id == fadedparadigm_id)
     {
