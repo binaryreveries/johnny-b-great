@@ -38,12 +38,17 @@ public hook_TakeDamage(victim_id, inflictor_id, attacker_id, damage, damagebits)
 {
   if (match_running)
   {
-    if (attacker_id == find_player_i("FadedParadigm") &&
+    new fadedparadigm_id = find_player_i("FadedParadigm")
+    if (attacker_id == fadedparadigm_id &&
         get_user_health(attacker_id) <= 100)
     {
       SetHamParamFloat(4, damage * 2.0)
-      new speed = get_user_maxspeed(attacker_id)
-      set_user_maxspeed(attacker_id, speed * 2.0)
+      new Float:speed = Float:get_user_maxspeed(fadedparadigm_id)
+      set_user_maxspeed(fadedparadigm_id, speed * 2.0)
+    }
+    else if (victim_id == fadedparadigm_id)
+    {
+      show_fadedparadigm_health(get_user_health(fadedparadigm_id))
     }
   }
 }
