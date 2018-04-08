@@ -27,7 +27,7 @@ public plugin_init()
   register_clcmd("say /jbg", "start_match", -1,
     "Shows Johnny B. Great info.")
 
-  RegisterHam(Ham_TakeDamage, "player", "hook_TakeDamage", 0, true)
+  RegisterHam(Ham_TakeDamage, "player", "hook_TakeDamage")
 
   HUD_msg_sync = CreateHudSyncObj()
   HP_msg_sync = CreateHudSyncObj()
@@ -42,8 +42,8 @@ public hook_TakeDamage(victim_id, inflictor_id, attacker_id, damage, damagebits)
         get_user_health(attacker_id) <= 100)
     {
       SetHamParamFloat(4, damage * 2.0)
-      speed = get_user_maxspeed(attack_id)
-      set_user_maxspeed(attack_id, speed * 2.0)
+      new speed = get_user_maxspeed(attacker_id)
+      set_user_maxspeed(attacker_id, speed * 2.0)
     }
   }
 }
@@ -80,7 +80,7 @@ public event_DeathMsg(id)
     else
     {
       new message[25]
-      format(message, 24, "Only %i agents remain!", remaining_agents)
+      format(message, 24, "Only %d agents remain!", remaining_agents)
       set_hudmessage(255, 0, 0, 1.0, 0.25, 0, 6.0, 12.0, 0.5, 0.25, -1)
       ShowSyncHudMsg(TARGET_ALL, AGENTS_msg_sync, message)
     }
