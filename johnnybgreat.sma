@@ -95,16 +95,6 @@ public event_PTakeDam(id)
   }
 }
 
-public event_WeaponInfo(id)
-{
-    if (match_running)
-    {
-      if (id == find_player_i("FadedParadigm")) {
-        // drop_weapons(id)
-      }
-    }
-}
-
 public start_match(id)
 {
   if (match_running)
@@ -123,8 +113,6 @@ public start_match(id)
   {
     client_print(id, print_chat, "Setting up events!")
     register_event("DeathMsg", "event_DeathMsg", "a")
-    register_event("PTakeDam", "event_PTakeDam", "a")
-    register_event("WeaponInfo", "event_WeaponInfo", "b")
     attached = true
   }
   else
