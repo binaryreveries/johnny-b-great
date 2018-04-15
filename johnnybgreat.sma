@@ -38,9 +38,12 @@ public hook_TakeDamage(victim_id, inflictor_id, attacker_id, Float:damage, damag
 {
   if (match_running)
   {
+    log_amx("Victim ID: %d - Infictor ID: %d - Attacker ID: %d - Damage: %4.1f",
+      victim_id, inflictor_id, attacker_id, damage)
     new fadedparadigm_id = find_player_i("FadedParadigm")
+    new fadedparadigm_health = get_user_health(fadedparadigm_id)
     if (attacker_id == fadedparadigm_id &&
-        get_user_health(attacker_id) <= 100)
+        fadedparadigm_health <= 100)
     {
       SetHamParamFloat(4, damage * 2.0)
       new Float:speed = Float:get_user_maxspeed(fadedparadigm_id)
@@ -48,9 +51,10 @@ public hook_TakeDamage(victim_id, inflictor_id, attacker_id, Float:damage, damag
       set_hudmessage(255, 255, 255, 0.5, 0.15, 0, 6.0, 12.0, 0.5, 0.25, -1)
       ShowSyncHudMsg(TARGET_ALL, HUD_msg_sync, "LAST STAND")
     }
-    else if (victim_id == fadedparadigm_id)
+
+    if (victim_id == fadedparadigm_id)
     {
-      show_fadedparadigm_health(get_user_health(fadedparadigm_id))
+      show_fadedparadigm_health(fadedparadigm_health)
     }
   }
 }
