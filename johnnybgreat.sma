@@ -91,10 +91,7 @@ public event_PTakeDam(id)
 {
   if (match_running)
   {
-    if (id == find_player_i("FadedParadigm"))
-    {
-      show_fadedparadigm_health(get_user_health(id))
-    }
+	show_fadedparadigm_health(get_user_health(id))
   }
 }
 
