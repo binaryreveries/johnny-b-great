@@ -3,7 +3,7 @@
 #include <fun>
 
 #define PLUGIN "Johnny B. Great!"
-#define VERSION "0.5"
+#define VERSION "0.6"
 #define AUTHOR "tree"
 
 new const MODEL[] = "model"
