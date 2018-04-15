@@ -34,7 +34,7 @@ public plugin_init()
   AGENTS_msg_sync = CreateHudSyncObj()
 }
 
-public hook_TakeDamage(victim_id, inflictor_id, attacker_id, damage, damagebits)
+public hook_TakeDamage(victim_id, inflictor_id, attacker_id, Float:damage, damagebits)
 {
   if (match_running)
   {
